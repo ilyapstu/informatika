@@ -46,6 +46,6 @@ print(S_shar)
 m1 = float(input())
 m2 = float(input())
 F = float(input())
-g = 6.67 * 10**-11
+g = 6.67 * 10**-11 #постоянная 
 r = (g * m1 * m2 / F)**(1/2)
 print(r)
