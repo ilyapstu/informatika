@@ -22,7 +22,6 @@ print(task2(x))
 
 
 #Задание 3
-
 import math as m
 x = float(input())
 
@@ -32,3 +31,15 @@ def f(x):
 
 
 print(f(x))
+
+
+
+#Задание 4
+import math as m
+s = float(input())
+d =1
+S_shar = s/6 * m.pi
+print(S_shar)
+
+
+#Задание 5
