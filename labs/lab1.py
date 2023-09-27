@@ -38,7 +38,7 @@ print(f(x))
 import math as m
 s = float(input())
 d =1
-S_shar = s/6 * m.pi
+S_shar = s/6 * m.pi #формула поверхности шара, преобразована из S пов.куба
 print(S_shar)
 
 
@@ -49,3 +49,17 @@ F = float(input())
 g = 6.67 * 10**-11 #постоянная 
 r = (g * m1 * m2 / F)**(1/2)
 print(r)
+
+
+#Задание 6
+
+h = int(input())
+r = int(input())
+S_osn = 2 * h * 4 * r   #формула площади боковой поверхности
+
+
+print(S_osn)
+
+
+
+#Задание 7
