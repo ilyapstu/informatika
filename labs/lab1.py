@@ -19,3 +19,16 @@ def task2(x):
 
 x = float(input(1))
 print(task2(x))
+
+
+#Задание 3
+
+import math as m
+x = float(input())
+
+
+def f(x):
+    return (m.log10(m.cos(x ** (1 / 3)))) ** (1 / 3)
+
+
+print(f(x))
