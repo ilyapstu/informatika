@@ -43,3 +43,9 @@ print(S_shar)
 
 
 #Задание 5
+m1 = float(input())
+m2 = float(input())
+F = float(input())
+g = 6.67 * 10**-11
+r = (g * m1 * m2 / F)**(1/2)
+print(r)
