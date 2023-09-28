@@ -72,7 +72,7 @@ c2 = int(input())
 d = a1 * b2 - a2 * b1
 x = ((c1 * b2) - (c2 * b1)) / d
 y = ((a1 * c2) - (a2 * c1)) / d
-c1 = (a1 * x) + (b1 * y) #Исправить c1 и c2
+c1 = (a1 * x) + (b1 * y)
 c2 = (a2 * x) + (b2 * y)
 
 print((c1, c2))
