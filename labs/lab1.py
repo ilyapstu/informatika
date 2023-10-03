@@ -87,3 +87,10 @@ g = 10 #постоянная для формулы высоты вертикал
 t = (2 * h/ g * u)**1/2
 
 print(t)
+
+#Задание 9
+salary = float(input())
+dohod_za_god = (salary - (salary * 0.13)) * 12
+
+print(dohod_za_god)
+
