@@ -17,7 +17,7 @@ def task2(x):
     return (a * (x ** 3) + x) / (b * (x ** 2)) + ((x ** 2) ** (1 / 3))
 
 
-x = float(input(1))
+x = float(input(x))
 print(task2(x))
 
 
