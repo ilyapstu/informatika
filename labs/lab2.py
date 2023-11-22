@@ -143,3 +143,40 @@ plt.ylabel('f(x)')
 plt.title('График функции f(x)')
 plt.grid(True)
 plt.show()
+
+
+#Задание 5
+def find_intersection(rect1, rect2):
+    # Извлекаем координаты верхнего левого и нижнего правого углов прямоугольников
+    x1, y1, x2, y2 = rect1
+    x3, y3, x4, y4 = rect2
+
+    # Проверяем, пересекаются ли прямоугольники
+    if x1 > x4 or x2 < x3 or y1 > y4 or y2 < y3:
+        # Прямоугольники не пересекаются
+        # Вычисляем расстояние между ближайшими вершинами
+        distance = min(
+            ((x1 - x4) ** 2 + (y1 - y4) ** 2) ** 0.5,  # Расстояние между вершинами (x1, y1) и (x4, y4)
+            ((x2 - x3) ** 2 + (y1 - y3) ** 2) ** 0.5,  # Расстояние между вершинами (x2, y1) и (x3, y3)
+            ((x1 - x4) ** 2 + (y2 - y3) ** 2) ** 0.5,  # Расстояние между вершинами (x1, y2) и (x4, y3)
+            ((x2 - x3) ** 2 + (y2 - y4) ** 2) ** 0.5   # Расстояние между вершинами (x2, y2) и (x3, y4)
+        )
+        return distance
+    else:
+        # Прямоугольники пересекаются
+        # Вычисляем площадь пересечения
+        intersection_width = min(x2, x4) - max(x1, x3)
+        intersection_height = min(y2, y4) - max(y1, y3)
+        intersection_area = intersection_width * intersection_height
+        return intersection_area
+
+# Пример использования
+rect1 = (0, 0, 5, 5)
+rect2 = (3, 3, 8, 8)
+intersection_area = find_intersection(rect1, rect2)
+print("Площадь пересечения:", intersection_area)
+
+rect3 = (0, 0, 2, 2)
+rect4 = (3, 3, 5, 5)
+distance = find_intersection(rect3, rect4)
+print("Расстояние между ближайшими вершинами:", distance)
