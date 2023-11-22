@@ -60,3 +60,31 @@ def months_to_buy(cost, salary):
 
 
 print(months_to_buy(10000, 20000))
+
+#Задание 10
+import math
+
+def arctan(x, n):
+    result = 0
+    for i in range(n+1):
+        coef = (-1)**i
+        num = x**(2*i+1)
+        denom = 2*i+1
+        result += coef * (num / denom)
+        return result
+
+def residual_error(x, n):
+    c = x / 2 # выбираем c между 0 и x
+    next_term = (-1)**(n+1) * (x**(2*n+3)) / (2*n+3)
+    residual = abs(next_term)
+    return residual
+
+x = 0.5
+n = 5
+approximation = arctan(x, n)
+error = residual_error(x, n)
+actual_value = math.atan(x)
+
+print(f"Частичная сумма ряда: {approximation}")
+print(f"Актуальное значение арктангенса: {actual_value}")
+print(f"Оценка остаточной ошибки: {error}")
