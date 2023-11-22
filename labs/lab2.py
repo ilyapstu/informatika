@@ -115,3 +115,31 @@ epsilon = 0.0001  # Заданная точность epsilon
 
 sum_value = calculate_sum(x, epsilon)
 print("Сумма ряда S =", sum_value)
+
+
+
+
+#Задание 2
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    if x >= 0:
+        return abs(x - 2) - 1
+    else:
+        return np.exp(x)
+
+a = -5 # Начальное значение интервала
+b = 5 # Конечное значение интервала
+num_points = 100  # Количество точек для построения графика
+
+x_values = np.linspace(a, b, num_points)
+y_values = np.array([f(x) for x in x_values])
+
+plt.plot(x_values, y_values)
+plt.xlabel('x')
+plt.ylabel('f(x)')
+plt.title('График функции f(x)')
+plt.grid(True)
+plt.show()
