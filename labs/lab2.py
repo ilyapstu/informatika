@@ -88,3 +88,23 @@ actual_value = math.atan(x)
 print(f"Частичная сумма ряда: {approximation}")
 print(f"Актуальное значение арктангенса: {actual_value}")
 print(f"Оценка остаточной ошибки: {error}")
+
+
+#Задание 8
+def calculate_sum(x, epsilon):
+    term = 1/2
+    result = term
+    n = 1
+
+    while abs(term) > epsilon:
+        n += 1
+        term *= (-1) * (n - 1) * x / n
+        result += term
+
+    return result
+
+x = 0.5  # Заданное значение x
+epsilon = 0.0001  # Заданная точность epsilon
+
+sum_value = calculate_sum(x, epsilon)
+print("Сумма ряда S =", sum_value)
