@@ -48,15 +48,22 @@ print("Результат:", res)
 
 #Задание 6
 def months_to_buy(cost, salary):
+    down_payment = cost * 0.05  # Размер первоначального взноса (5% от стоимости)
+    monthly_savings = salary * 0.03  # Ежемесячное накопление (3% от заработной платы)
     months = 0
-    quarterly_salary = salary
-    while cost > 0:
-        cost *= 1.0315  # Увеличиваем цену компьютера на 3.15%
-        if months % 3 == 0 and months > 0:
-            quarterly_salary *= 1.05  # Увеличиваем зарплату каждый квартал на 5%
-            cost -= quarterly_salary
-            months += 1
-        return months
+
+    while down_payment < cost:
+        cost -= monthly_savings
+        down_payment += monthly_savings
+        months += 1
+
+    return months
+
+cost = 1000000  # Стоимость покупки
+salary = 5000  # Заработная плата
+
+num_months = months_to_buy(cost, salary)
+print("Необходимое количество месяцев для накопления:", num_months)
 
 
 print(months_to_buy(10000, 20000))
