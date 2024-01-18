@@ -25,3 +25,35 @@
     print("proverka3:", proverka3(array))
     print("proverka4:", proverka4(array))
     print("proverka5:", proverka5(array))
+
+
+def print_char_2d_array(array):
+    for row in array:
+        print(" ".join(row))
+
+def task2():
+    print("Введите размер стороны поля для игры «Морской бой»:")
+    n = int(input())
+    
+    # Creating a 2D array and filling it with symbols
+    array = [['·' for _ in range(n+1)] for _ in range(n+1)]
+    array[0] = ['А', 'Б', 'В', 'Г']  # Adding letters to the first row
+    for i in range(1, n+1):
+        array[i][0] = str(i)  # Adding numbers to the first column
+        array[i][i] = '□'  # Placing '□' in a diagonal pattern
+    
+    # Function to check and mark a shot
+    def vistrel(row, column, array):
+        if array[row][column] == '□':
+            array[row][column] = '×'
+    
+    # Main loop for user input and shot checking
+    while True:
+        print_char_2d_array(array)
+        coordinates = input("Введите координаты в виде «А2» или «А 2»: ").upper().replace(" ", "")
+        if len(coordinates) == 2 and coordinates[0] in 'АБВГ' and coordinates[1].isdigit():
+            row = int(coordinates[1])
+            column = ord(coordinates[0]) - ord('А') + 1
+            vistrel(row, column, array)
+        else:
+            print("Некорректные координаты. Повторите ввод.")
