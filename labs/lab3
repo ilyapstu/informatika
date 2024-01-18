@@ -1,0 +1,27 @@
+ def create_char_array(n):
+        return [input("Введите символ: ") for _ in range(n)]
+
+    print("Введите последовательность символов:")
+    
+    array = create_char_array(int(input("Введите количество символов: ")))
+
+    def proverka1(array, symbol):
+        return symbol in array
+
+    def proverka2(array, first_symbol, second_symbol):
+        return sum(1 for i in range(len(array)-1) if array[i] == first_symbol and array[i+1] == second_symbol)
+
+    def proverka3(array):
+        return sum(1 for i in range(len(array)-1) if array[i] == array[i+1])
+
+    def proverka4(array):
+        return any(array[i] == array[i+1] for i in range(len(array)-1))
+
+    def proverka5(array):
+        return array.count(' ')
+
+    print("proverka1:", proverka1(array, 'a'))
+    print("proverka2:", proverka2(array, 'a', 'b'))
+    print("proverka3:", proverka3(array))
+    print("proverka4:", proverka4(array))
+    print("proverka5:", proverka5(array))
