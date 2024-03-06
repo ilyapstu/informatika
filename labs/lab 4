@@ -69,3 +69,128 @@ class PointInAreaApp:
 root = tk.Tk()
 app = PointInAreaApp(root)
 root.mainloop()
+
+
+
+
+
+
+
+
+ЗАДАНИЕ 2
+
+
+from tkinter import messagebox
+import matplotlib.pyplot as plt
+import numpy as np
+import tkinter as tk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+
+class BisectionMethodApp:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Метод бисекции")
+
+        # Variables for equation and interval
+        self.equation = tk.StringVar()
+        self.interval_start = tk.DoubleVar()
+        self.interval_end = tk.DoubleVar()
+
+        # Create GUI elements
+        self.create_widgets()
+
+        # Initialize plot
+        self.fig, self.ax = plt.subplots()
+        self.canvas = self.create_canvas()
+        self.canvas.get_tk_widget().grid(row=2, columnspan=3, padx=5, pady=5)
+
+    def create_widgets(self):
+        # Equation input
+        tk.Label(self.master, text="Кривая:").grid(row=0, column=0, padx=5, pady=5)
+        tk.Entry(self.master, textvariable=self.equation, width=30).grid(row=0, column=1, padx=5, pady=5)
+
+        # Interval input
+        tk.Label(self.master, text=" [a, b]:").grid(row=1, column=0, padx=5, pady=5)
+        tk.Entry(self.master, textvariable=self.interval_start, width=10).grid(row=1, column=1, padx=5, pady=5)
+        tk.Entry(self.master, textvariable=self.interval_end, width=10).grid(row=1, column=2, padx=5, pady=5)
+
+        # Button to start bisection method
+        tk.Button(self.master, text="Find Root", command=self.find_root).grid(row=1, column=3, padx=5, pady=5)
+
+        # Button for next step (optional)
+        # tk.Button(self.master, text="Next Step", command=self.next_step).grid(row=1, column=4, padx=5, pady=5)
+
+    def create_canvas(self):
+        # Create canvas for plot
+        self.ax.set_xlabel('x')
+        self.ax.set_ylabel('f(x)')
+        return FigureCanvasTkAgg(self.fig, master=self.master)
+
+    def plot_function(self, x_values, y_values):
+        # Plot function
+        self.ax.plot(x_values, y_values, label='f(x)')
+        self.ax.legend()
+        self.canvas.draw()
+
+    def plot_interval(self, interval_start, interval_end):
+        # Plot interval
+        self.ax.axvline(x=interval_start, color='r', linestyle='--')
+        self.ax.axvline(x=interval_end, color='r', linestyle='--')
+        self.canvas.draw()
+
+    def plot_root(self, root):
+        # Plot root
+        self.ax.plot(root, 0, 'ro')
+        self.canvas.draw()
+
+    def find_root(self):
+        # Bisection method implementation
+        equation = lambda x: eval(self.equation.get())
+        a = self.interval_start.get()
+        b = self.interval_end.get()
+
+        # Check if endpoints have different signs
+        if equation(a) * equation(b) >= 0:
+            messagebox.showerror("Ошибка", "Метод не сходится за максимальное количество итераций")
+            return
+
+        # Plot function
+        x_values = np.linspace(a, b, 100)
+        y_values = equation(x_values)
+        self.plot_function(x_values, y_values)
+
+        # Initialize variables
+        max_iterations = 100
+        tolerance = 1e-6
+        root = None
+        iterations = 0
+
+        while iterations < max_iterations:
+            c = (a + b) / 2
+            if abs(equation(c)) < tolerance:
+                root = c
+                break
+            elif equation(c) * equation(a) < 0:
+                b = c
+            else:
+                a = c
+
+            # Plot current interval
+            self.plot_interval(a, b)
+
+            # Pause for animation (optional)
+            # self.master.after(1000)
+
+            iterations += 1
+
+        if root is not None:
+            messagebox.showinfo("Результат", f"Точка {root}")
+            self.plot_root(root)
+        else:
+            messagebox.showerror("Ошибка", "Метод не сходится за максимальное количество итераций")
+
+
+root = tk.Tk()
+app = BisectionMethodApp(root)
+root.mainloop()
