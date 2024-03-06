@@ -194,3 +194,88 @@ class BisectionMethodApp:
 root = tk.Tk()
 app = BisectionMethodApp(root)
 root.mainloop()
+
+
+
+
+
+
+
+ЗАДАНИЕ 3
+
+
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle, Circle
+from tkinter import Tk, Label, Entry, Button, StringVar, OptionMenu
+
+
+class MapApp:
+    def __init__(self):
+        self.objects = []
+        self.water_bodies = []
+
+        self.root = Tk()
+        self.root.title("Примитивная картография")
+
+        self.label_coords = Label(self.root, text="Координаты (x,y):")
+        self.label_coords.grid(row=0, column=0)
+        self.entry_coords = Entry(self.root)
+        self.entry_coords.grid(row=0, column=1)
+
+        self.label_type = Label(self.root, text="Тип объекта:")
+        self.label_type.grid(row=1, column=0)
+        self.type_var = StringVar()
+        self.type_var.set("Выберите тип")
+        self.option_menu = OptionMenu(self.root, self.type_var, "Насосная станция", "Пожарный водоем")
+        self.option_menu.grid(row=1, column=1)
+
+        self.button_add = Button(self.root, text="Добавить объект", command=self.add_object)
+        self.button_add.grid(row=2, column=0, columnspan=2)
+
+        self.canvas = plt.figure()
+        self.ax = self.canvas.add_subplot(111)
+        self.ax.set_aspect('equal')
+        self.ax.set_xlabel('Широта')
+        self.ax.set_ylabel('Долгота')
+
+        self.legend = {'Насосная станция': 'r', 'Пожарный водоем': 'b'}
+        self.labels = [Rectangle((0, 0), 1, 1, color=color) for color in self.legend.values()]
+        self.legend_labels = list(self.legend.keys())
+        self.ax.legend(self.labels, self.legend_labels)
+
+    def add_object(self):
+        coords = self.entry_coords.get()
+        obj_type = self.type_var.get()
+        x, y = map(float, coords.split(','))
+        if obj_type == "Насосная станция":
+            marker = 's'
+            color = 'r'
+        elif obj_type == "Пожарный водоем":
+            marker = 'o'
+            color = 'b'
+            radius = 10  # Default radius
+            self.water_bodies.append((x, y, radius))
+        else:
+            return
+        self.objects.append((x, y, marker, color))
+        self.update_map()
+
+    def update_map(self):
+        self.ax.clear()
+        for obj in self.objects:
+            x, y, marker, color = obj
+            self.ax.plot(x, y, marker, color=color)
+        for water_body in self.water_bodies:
+            x, y, radius = water_body
+            circle = Circle((x, y), radius, color='b', alpha=0.5)
+            self.ax.add_patch(circle)
+        self.ax.legend(self.labels, self.legend_labels)
+        self.canvas.canvas.draw()
+
+    def run(self):
+        plt.show()
+
+
+if __name__ == "__main__":
+    app = MapApp()
+    app.run()
