@@ -1,1 +1,71 @@
+import tkinter as tk
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import numpy as np
 
+
+class PointInAreaApp:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Point in Area")
+
+        # Variables for point coordinates
+        self.point_x = tk.DoubleVar()
+        self.point_y = tk.DoubleVar()
+
+        # Variables for equations of curves
+        self.equation_1 = tk.StringVar()
+        self.equation_2 = tk.StringVar()
+
+        # Create GUI elements
+        self.create_widgets()
+
+        # Plot initial figure
+        self.plot_figure()
+
+    def create_widgets(self):
+        # Point coordinates input
+        tk.Label(self.master, text="Point Coordinates:").grid(row=0, column=0, padx=5, pady=5)
+        tk.Entry(self.master, textvariable=self.point_x, width=10).grid(row=0, column=1, padx=5, pady=5)
+        tk.Entry(self.master, textvariable=self.point_y, width=10).grid(row=0, column=2, padx=5, pady=5)
+
+        # Equations input
+        tk.Label(self.master, text="Equation 1:").grid(row=1, column=0, padx=5, pady=5)
+        tk.Entry(self.master, textvariable=self.equation_1, width=20).grid(row=1, column=1, padx=5, pady=5)
+        tk.Label(self.master, text="Equation 2:").grid(row=1, column=2, padx=5, pady=5)
+        tk.Entry(self.master, textvariable=self.equation_2, width=20).grid(row=1, column=3, padx=5, pady=5)
+
+        # Plot area
+        self.fig, self.ax = plt.subplots()
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self.master)
+        self.canvas.get_tk_widget().grid(row=2, columnspan=4, padx=5, pady=5)
+
+        # Button to update plot
+        tk.Button(self.master, text="Update Plot", command=self.plot_figure).grid(row=3, columnspan=4, padx=5, pady=5)
+
+    def plot_figure(self):
+        # Clear previous plot
+        self.ax.clear()
+
+        # Plot curves
+        x = np.linspace(-10, 10, 400)
+        if self.equation_1.get():
+            y1 = eval(self.equation_1.get())
+            self.ax.plot(x, y1, label="Curve 1")
+        if self.equation_2.get():
+            y2 = eval(self.equation_2.get())
+            self.ax.plot(x, y2, label="Curve 2")
+
+        # Plot point
+        self.ax.plot(self.point_x.get(), self.point_y.get(), 'ro', label="Point")
+
+        # Add legend
+        self.ax.legend()
+
+        # Update plot
+        self.canvas.draw()
+
+
+root = tk.Tk()
+app = PointInAreaApp(root)
+root.mainloop()
