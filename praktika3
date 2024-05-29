@@ -1,0 +1,122 @@
+import numpy as np
+import sys
+from PyQt5.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QVBoxLayout,
+    QWidget,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QComboBox,
+    QListWidget,
+    QFileDialog,
+    QMessageBox, QFormLayout
+)
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+import matplotlib.pyplot as plt
+
+
+class PlotWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("График функций")
+        self.setGeometry(100, 100, 800, 600)
+        layout = QFormLayout()
+
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
+        self.layout = QVBoxLayout()
+        self.central_widget.setLayout(self.layout)
+
+        self.function_label = QLabel("Функция:")
+        self.function_input = QLineEdit()
+        self.layout.addWidget(self.function_label)
+        self.layout.addWidget(self.function_input)
+
+        self.range_label = QLabel("Диапазон X:")
+        self.range_min_input = QLineEdit("-10")
+        self.range_max_input = QLineEdit("10")
+        self.layout.addWidget(self.range_label)
+        self.layout.addWidget(self.range_min_input)
+        self.layout.addWidget(self.range_max_input)
+
+        self.point_count_label = QLabel("Количество точек:")
+        self.point_count_combobox = QComboBox()
+        self.point_count_combobox.addItems(["50", "100", "200"])
+        self.layout.addWidget(self.point_count_label)
+        self.layout.addWidget(self.point_count_combobox)
+
+        self.add_function_button = QPushButton("Добавить функцию")
+        self.add_function_button.clicked.connect(self.add_function)
+        self.layout.addWidget(self.add_function_button)
+        self.function_label = QLabel('Список Функций')
+        self.function_widget = QComboBox
+        self.function_widget.addItems(['x', '2*x', 'x**2', 'x**3'])
+        self.add_function_button1.clicked.connect(self.add_function)
+
+        self.clear_plot_button = QPushButton("Очистить график")
+        self.clear_plot_button.clicked.connect(self.clear_plot)
+        self.layout.addWidget(self.clear_plot_button)
+
+        self.save_plot_button = QPushButton("Сохранить график")
+        self.save_plot_button.clicked.connect(self.save_plot)
+        self.layout.addWidget(self.save_plot_button)
+
+        self.function_list = QListWidget()
+        self.function_list.itemClicked.connect(self.plot_selected_function)
+        self.layout.addWidget(self.function_list)
+
+        self.figure, self.plot = plt.subplots()
+        self.canvas = FigureCanvas(self.figure)
+        self.layout.addWidget(self.canvas)
+
+        layout.addRow(self.function_label)
+        layout.addWidget(self.function_widget)
+
+    def add_function(self):
+        function_text = self.function_input.text()
+        try:
+            x_min = float(self.range_min_input.text())
+            x_max = float(self.range_max_input.text())
+            point_count = int(self.point_count_combobox.currentText())
+            x = np.linspace(x_min, x_max, point_count)
+            y = eval(function_text)
+            self.plot.plot(x, y)
+            self.function_list.addItem(function_text)
+            self.canvas.draw()  # Обновление полотна
+        except Exception as e:
+            self.show_error_message(str(e))
+
+    def clear_plot(self):
+        self.plot.clear()
+        self.canvas.draw()  # Обновление полотна
+
+    def save_plot(self):
+        filename, _ = QFileDialog.getSaveFileName(self, 'Сохранить график', '', 'PNG Files (*.png);;All Files (*)')
+        if filename:
+            self.figure.savefig(filename)
+
+    def plot_selected_function(self, item):
+        function_text = item.text()
+        x_min = float(self.range_min_input.text())
+        x_max = float(self.range_max_input.text())
+        point_count = int(self.point_count_combobox.currentText())
+        x = np.linspace(x_min, x_max, point_count)
+        y = eval(function_text)
+        self.plot.clear()
+        self.plot.plot(x, y)
+        self.canvas.draw()
+
+    def show_error_message(self, message):
+        error_dialog = QMessageBox()
+        error_dialog.setIcon(QMessageBox.Critical)
+        error_dialog.setWindowTitle("Ошибка")
+        error_dialog.setText(message)
+        error_dialog.exec_()
+
+if __name__ == __main__:
+    app = QApplication(sys.argv)
+    window = PlotWindow()
+    window.show()
+    sys.exit(app.exec_())
